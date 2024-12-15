@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import style from "./style.module.css";
+import Image from "next/image";
 
 export default function Page() {
   const [links, setLinks] = useState<string[]>([""]); // 初期状態で1つのフィールド
@@ -51,6 +52,12 @@ export default function Page() {
       >
         フィールドを追加
       </button>
+      <Image
+        src="/nc196117.png" //配置した画像のパスを記述する。
+        alt="TV Image"
+        layout="fill"
+        objectFit="cover"
+      />
     </div>
   );
 }
