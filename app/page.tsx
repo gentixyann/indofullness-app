@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
+import style from "./style.module.css";
 
 export default function Page() {
   const [links, setLinks] = useState<string[]>([""]); // 初期状態で1つのフィールド
@@ -29,7 +30,7 @@ export default function Page() {
               onChange={(e) => handleInputChange(index, e.target.value)}
               className="border border-gray-300 p-2 rounded-md w-full"
             />
-            <div>
+            <div className={style.videoWrapper}>
               {link && (
                 <ReactPlayer
                   key={link} // URLごとに異なるキーを設定
