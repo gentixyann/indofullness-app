@@ -21,6 +21,13 @@ export default function Page() {
   return (
     <div className="flex flex-col items-center p-4">
       <h1 className="text-2xl font-bold mb-4">動画音声再生アプリ</h1>
+      <Image
+        src="/nc196117.png"
+        alt="TV Image"
+        width={600}
+        height={600}
+        objectFit="cover"
+      />
       <div className="space-y-4 w-full max-w-lg">
         {links.map((link, index) => (
           <div key={index} className="flex flex-col space-y-2">
@@ -52,12 +59,6 @@ export default function Page() {
       >
         フィールドを追加
       </button>
-      <Image
-        src="/nc196117.png" //配置した画像のパスを記述する。
-        alt="TV Image"
-        layout="fill"
-        objectFit="cover"
-      />
     </div>
   );
 }
