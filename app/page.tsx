@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import style from "./style.module.css";
-import Image from "next/image";
 
 export default function Page() {
   const [links, setLinks] = useState<string[]>([""]); // 初期状態で1つのフィールド
