@@ -45,7 +45,8 @@ export default function Page() {
       </button>
 
       {/* 動画表示（下部に配置） */}
-      <div className="space-y-4 w-full max-w-lg">
+      {/* <div className="space-y-4 w-full max-w-lg"> */}
+      <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
         {links.map((link, index) => (
           <div key={index} className={style.videoWrapper}>
             {link && (
