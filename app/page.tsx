@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
@@ -8,25 +8,46 @@ import videoUrls from "../public/json/videoUrls.json";
 const frogImage = "/images/frog.gif";
 
 export default function Page() {
-  const [selectedVideos, setSelectedVideos] = useState<string[]>([]); // 選ばれた動画URL
+  const [selectedVideos, setSelectedVideos] = useState<string[]>([]); // 動画URLリスト
+  const [imageVisibility, setImageVisibility] = useState<boolean[]>([]); // 画像の表示状態
 
   // ランダムで5つの動画URLを取得
   const fetchRandomVideos = () => {
     const shuffled = [...videoUrls].sort(() => Math.random() - 0.5);
     const randomVideos = shuffled.slice(0, 5); // 上位5つを選択
     setSelectedVideos(randomVideos);
+    setImageVisibility(Array(randomVideos.length).fill(true)); // 初期状態ではすべて表示
   };
+
+  // ランダムに点滅させる
+  useEffect(() => {
+    if (selectedVideos.length === 0) return;
+
+    const intervals = selectedVideos.map((_, index) => {
+      return setInterval(() => {
+        setImageVisibility((prev) => {
+          const updated = [...prev];
+          updated[index] = !updated[index]; // 状態をトグル
+          return updated;
+        });
+      }, Math.random() * 4000 + 1000); // 1秒から5秒間隔
+    });
+
+    return () => {
+      intervals.forEach(clearInterval); // コンポーネントがアンマウントされたらクリーンアップ
+    };
+  }, [selectedVideos]);
 
   return (
     <div className="flex flex-col items-center p-4">
       {/* Imageコンポーネントでロゴ画像を表示 */}
       <div className="mb-4">
         <Image
-          src="/images/logo.svg" // ロゴ画像のパス
+          src="/images/logo.svg"
           alt="アプリロゴ"
-          width={200} // 画像幅
-          height={50} // 画像高さ
-          priority // 優先的にロード
+          width={200}
+          height={50}
+          priority
         />
       </div>
       <button
@@ -60,7 +81,9 @@ export default function Page() {
                   <Image
                     src={frogImage}
                     alt="frogImage"
-                    className="rounded-md"
+                    className={`rounded-md ${
+                      imageVisibility[index] ? "opacity-100" : "opacity-0"
+                    } transition-opacity duration-500`}
                     width={600}
                     height={338}
                   />
@@ -85,7 +108,9 @@ export default function Page() {
                   <Image
                     src={frogImage}
                     alt="frogImage"
-                    className="rounded-md"
+                    className={`rounded-md ${
+                      imageVisibility[index] ? "opacity-100" : "opacity-0"
+                    } transition-opacity duration-500`}
                     width={600}
                     height={338}
                   />

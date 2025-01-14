@@ -20,3 +20,19 @@ body {
   background-image: url("/images/background.jpg");
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.tikatika {
+  animation: tikatika 1s step-end infinite;
+}
+
+@keyframes tikatika {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
