@@ -59,7 +59,7 @@ export default function Page() {
       </button>
 
       {/* 動画と画像の表示 */}
-      <div className="w-full max-w-3xl">
+      <div className="max-w-sm">
         {selectedVideos.map((url, index) => {
           const isLeftVideo = index % 2 === 0; // 偶数は動画が左、奇数は画像が左
           return (
