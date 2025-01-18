@@ -5,6 +5,7 @@ import ReactPlayer from "react-player";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
 
+const overlayImage = "/images/tv_frame.png";
 const frogImage = "/images/frog.gif";
 
 export default function Page() {
@@ -67,16 +68,26 @@ export default function Page() {
               <div
                 className={`${
                   isLeftVideo ? "w-[70%]" : "w-[30%]"
-                } flex-shrink-0`}
+                } relative flex-shrink-0`}
               >
                 {isLeftVideo ? (
-                  <ReactPlayer
-                    url={url}
-                    controls
-                    playing
-                    width="100%"
-                    height="100%"
-                  />
+                  <>
+                    <ReactPlayer
+                      url={url}
+                      controls
+                      playing
+                      width="83%"
+                      height="100%"
+                      className="pl-3"
+                    />
+                    <Image
+                      src={overlayImage}
+                      alt="Overlay"
+                      className="absolute top-0 left-0 z-10"
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </>
                 ) : (
                   <Image
                     src={frogImage}
@@ -94,16 +105,26 @@ export default function Page() {
               <div
                 className={`${
                   isLeftVideo ? "w-[30%]" : "w-[70%]"
-                } flex-shrink-0`}
+                } relative flex-shrink-0`}
               >
                 {!isLeftVideo ? (
-                  <ReactPlayer
-                    url={url}
-                    controls
-                    playing
-                    width="100%"
-                    height="100%"
-                  />
+                  <>
+                    <ReactPlayer
+                      url={url}
+                      controls
+                      playing
+                      width="100%"
+                      height="100%"
+                      className="pl-3"
+                    />
+                    <Image
+                      src={overlayImage}
+                      alt="Overlay"
+                      className="absolute top-0 left-0 z-10"
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </>
                 ) : (
                   <Image
                     src={frogImage}
