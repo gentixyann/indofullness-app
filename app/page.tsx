@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
@@ -9,48 +9,57 @@ const overlayImage = "/images/tv_frame.png";
 const frogImage = "/images/frog.gif";
 
 export default function Page() {
-  const [selectedVideos, setSelectedVideos] = useState<string[]>([]); // 動画URLリスト
-  const [imageVisibility, setImageVisibility] = useState<boolean[]>([]); // 画像の表示状態
+  const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
+  const [imageVisibility, setImageVisibility] = useState<boolean[]>([
+    true,
+    true,
+    true,
+  ]);
 
-  // ランダムで5つの動画URLを取得
-  const fetchRandomVideos = () => {
+  // 🎯 ボタンで呼び出せるように useCallback でラップ
+  const fetchRandomVideos = useCallback(() => {
     const shuffled = [...videoUrls].sort(() => Math.random() - 0.5);
-    const randomVideos = shuffled.slice(0, 5); // 上位5つを選択
-    setSelectedVideos(randomVideos);
-    setImageVisibility(Array(randomVideos.length).fill(true)); // 初期状態ではすべて表示
-  };
+    setSelectedVideos(shuffled.slice(0, 3));
+    setImageVisibility([true, true, true]); // 初期状態リセット
+  }, []);
 
-  // ランダムに点滅させる
+  // 🎯 初回レンダリング時に動画を取得
   useEffect(() => {
-    if (selectedVideos.length === 0) return;
+    fetchRandomVideos();
+  }, [fetchRandomVideos]);
+
+  useEffect(() => {
+    if (selectedVideos.length === 0) return; // データがないときは実行しない
 
     const intervals = selectedVideos.map((_, index) => {
       return setInterval(() => {
         setImageVisibility((prev) => {
           const updated = [...prev];
-          updated[index] = !updated[index]; // 状態をトグル
+          updated[index] = !updated[index];
           return updated;
         });
-      }, Math.random() * 4000 + 1000); // 1秒から5秒間隔
+      }, Math.random() * 4000 + 1000);
     });
 
     return () => {
-      intervals.forEach(clearInterval); // コンポーネントがアンマウントされたらクリーンアップ
+      intervals.forEach(clearInterval);
     };
   }, [selectedVideos]);
 
   return (
-    <div className="flex flex-col items-center p-4">
-      {/* Imageコンポーネントでロゴ画像を表示 */}
-      <div className="mb-4">
+    <div className="flex flex-col items-center max-w-screen-sm mx-auto p-4">
+      {/* ロゴの表示 */}
+      <div className="my-12">
         <Image
           src="/images/logo.svg"
           alt="アプリロゴ"
-          width={200}
+          width={300}
           height={50}
           priority
         />
       </div>
+
+      {/* ボタン */}
       <button
         onClick={fetchRandomVideos}
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mb-4"
@@ -58,88 +67,95 @@ export default function Page() {
         再生する
       </button>
 
-      {/* 動画と画像の表示 */}
-      <div className="max-w-sm">
-        {selectedVideos.map((url, index) => {
-          const isLeftVideo = index % 2 === 0; // 偶数は動画が左、奇数は画像が左
-          return (
-            <div key={index} className="flex flex-row mb-4">
-              {/* 左側 (動画または画像) */}
-              <div
-                className={`${
-                  isLeftVideo ? "w-[70%]" : "w-[30%]"
-                } relative flex-shrink-0`}
-              >
-                {isLeftVideo ? (
-                  <>
-                    <ReactPlayer
-                      url={url}
-                      controls
-                      playing
-                      width="83%"
-                      height="100%"
-                      className="pl-3"
-                    />
-                    <Image
-                      src={overlayImage}
-                      alt="Overlay"
-                      className="absolute top-0 left-0 z-10"
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </>
-                ) : (
-                  <Image
-                    src={frogImage}
-                    alt="frogImage"
-                    className={`rounded-md ${
-                      imageVisibility[index] ? "opacity-100" : "opacity-0"
-                    } transition-opacity duration-500`}
-                    width={600}
-                    height={338}
-                  />
-                )}
-              </div>
-
-              {/* 右側 (画像または動画) */}
-              <div
-                className={`${
-                  isLeftVideo ? "w-[30%]" : "w-[70%]"
-                } relative flex-shrink-0`}
-              >
-                {!isLeftVideo ? (
-                  <>
-                    <ReactPlayer
-                      url={url}
-                      controls
-                      playing
-                      width="100%"
-                      height="100%"
-                      className="pl-3"
-                    />
-                    <Image
-                      src={overlayImage}
-                      alt="Overlay"
-                      className="absolute top-0 left-0 z-10"
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </>
-                ) : (
-                  <Image
-                    src={frogImage}
-                    alt="frogImage"
-                    className={`rounded-md ${
-                      imageVisibility[index] ? "opacity-100" : "opacity-0"
-                    } transition-opacity duration-500`}
-                    width={600}
-                    height={338}
-                  />
-                )}
-              </div>
+      {/* 各動画と画像を個別に配置 */}
+      <div className="w-full flex flex-col gap-6">
+        {/* 1番目のセット: 動画右寄せ */}
+        {selectedVideos.length > 0 && (
+          <div className="flex justify-end">
+            <div className="relative aspect-video w-[70%]">
+              <ReactPlayer
+                url={selectedVideos[0]}
+                controls
+                playing
+                width="100%"
+                height="100%"
+                className="relative z-10"
+              />
+              <Image
+                src={overlayImage}
+                alt="Overlay"
+                className="absolute inset-0 z-20 pointer-events-none"
+                layout="fill"
+                objectFit="cover"
+              />
             </div>
-          );
-        })}
+          </div>
+        )}
+
+        {/* 2番目のセット: 左右に画像 */}
+        <div className="flex justify-between items-end">
+          <div className="w-[80%]">
+            <Image
+              src="/images/horse.gif"
+              alt="horse"
+              className={`rounded-md transition-opacity duration-500 ${
+                imageVisibility[0] ? "opacity-100" : "opacity-0"
+              }`}
+              width={500}
+              height={500}
+            />
+          </div>
+
+          <div className="w-[50%]">
+            <Image
+              src="/images/potate.gif"
+              alt="horse"
+              className={`rounded-md transition-opacity duration-500 ${
+                imageVisibility[1] ? "opacity-100" : "opacity-0"
+              }`}
+              width={500}
+              height={500}
+            />
+          </div>
+        </div>
+
+        {/* 3番目のセット: 動画左寄せ */}
+        {selectedVideos.length > 1 && (
+          <div className="flex justify-start">
+            <div className="relative aspect-video w-[70%]">
+              <ReactPlayer
+                url={selectedVideos[1]}
+                controls
+                playing
+                width="100%"
+                height="100%"
+                className="relative z-10"
+              />
+              <Image
+                src={overlayImage}
+                alt="Overlay"
+                className="absolute inset-0 z-20 pointer-events-none"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 4番目のセット: 画像右寄せ */}
+        <div className="flex justify-end">
+          <div className="w-[30%]">
+            <Image
+              src={frogImage}
+              alt="frogImage"
+              className={`rounded-md transition-opacity duration-500 ${
+                imageVisibility[2] ? "opacity-100" : "opacity-0"
+              }`}
+              width={300}
+              height={200}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
