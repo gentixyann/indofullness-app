@@ -9,15 +9,17 @@ interface ImageSectionProps {
   imageSrc: string;
   width?: string;
   isVisible: boolean;
+  className?: string;
 }
 
 export default function ImageSection({
   imageSrc,
   width = "70%",
   isVisible,
+  className = "",
 }: ImageSectionProps) {
   return (
-    <div style={{ width }}>
+    <div className={`${className} relative`} style={{ width }}>
       <Image
         src={imageSrc}
         alt="gif"
