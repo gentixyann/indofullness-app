@@ -201,6 +201,15 @@ export default function Page() {
           />
         </div>
       </div>
+      <div className="-mb-4">
+        <Image
+          src="/images/chai_bottom.svg"
+          alt="chai_bottom"
+          width={300}
+          height={50}
+          priority
+        />
+      </div>
     </div>
   );
 }
