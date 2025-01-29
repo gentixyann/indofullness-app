@@ -4,23 +4,33 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
+import VideoSection from "@/components/VideoSection";
+import ImageSection from "@/components/ImageSection";
 
 const overlayImage = "/images/tv_frame.png";
 const frogImage = "/images/frog.gif";
 
+// 📌 画像リストを配列で管理
+const imageSources = [
+  "/images/horse.gif",
+  "/images/potate.gif",
+  "/images/monkey.gif",
+  "/images/chai.gif",
+];
+
 export default function Page() {
   const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
-  const [imageVisibility, setImageVisibility] = useState<boolean[]>([
-    true,
-    true,
-    true,
-  ]);
+  const [imageVisibility, setImageVisibility] = useState<boolean[]>([]);
+
+  // 🎯 初回・画像リスト更新時に visibility 配列をセット
+  useEffect(() => {
+    setImageVisibility(Array(imageSources.length).fill(true));
+  }, []);
 
   // 🎯 ボタンで呼び出せるように useCallback でラップ
   const fetchRandomVideos = useCallback(() => {
     const shuffled = [...videoUrls].sort(() => Math.random() - 0.5);
     setSelectedVideos(shuffled.slice(0, 3));
-    setImageVisibility([true, true, true]); // 初期状態リセット
   }, []);
 
   // 🎯 初回レンダリング時に動画を取得
@@ -28,23 +38,20 @@ export default function Page() {
     fetchRandomVideos();
   }, [fetchRandomVideos]);
 
+  // 🎯 画像ごとにランダムな点滅を設定（imageSources に対して動的に処理）
   useEffect(() => {
-    if (selectedVideos.length === 0) return; // データがないときは実行しない
-
-    const intervals = selectedVideos.map((_, index) => {
-      return setInterval(() => {
+    const intervals = imageSources.map((_, index) =>
+      setInterval(() => {
         setImageVisibility((prev) => {
           const updated = [...prev];
           updated[index] = !updated[index];
           return updated;
         });
-      }, Math.random() * 4000 + 1000);
-    });
+      }, Math.random() * 4000 + 1000)
+    );
 
-    return () => {
-      intervals.forEach(clearInterval);
-    };
-  }, [selectedVideos]);
+    return () => intervals.forEach(clearInterval);
+  }, []);
 
   return (
     <div className="flex flex-col items-center max-w-screen-sm mx-auto p-4">
@@ -72,90 +79,51 @@ export default function Page() {
         {/* 1番目のセット: 動画右寄せ */}
         {selectedVideos.length > 0 && (
           <div className="flex justify-end">
-            <div className="relative aspect-video w-[70%]">
-              <ReactPlayer
-                url={selectedVideos[0]}
-                controls
-                playing
-                width="100%"
-                height="100%"
-                className="relative z-10"
-              />
-              <Image
-                src={overlayImage}
-                alt="Overlay"
-                className="absolute inset-0 z-20 pointer-events-none"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
+            <VideoSection videoUrl={selectedVideos[0]} width="70%" />
           </div>
         )}
 
         {/* 2番目のセット: 左右に画像 */}
         <div className="flex justify-between items-end">
-          <div className="w-[80%]">
-            <Image
-              src="/images/horse.gif"
-              alt="horse"
-              className={`rounded-md transition-opacity duration-500 ${
-                imageVisibility[0] ? "opacity-100" : "opacity-0"
-              }`}
-              width={500}
-              height={500}
-            />
-          </div>
-
-          <div className="w-[50%]">
-            <Image
-              src="/images/potate.gif"
-              alt="horse"
-              className={`rounded-md transition-opacity duration-500 ${
-                imageVisibility[1] ? "opacity-100" : "opacity-0"
-              }`}
-              width={500}
-              height={500}
-            />
-          </div>
+          <ImageSection
+            imageSrc={imageSources[0]}
+            width="80%"
+            isVisible={imageVisibility[0]}
+          />
+          <ImageSection
+            imageSrc={imageSources[1]}
+            width="50%"
+            isVisible={imageVisibility[1]}
+          />
         </div>
 
         {/* 3番目のセット: 動画左寄せ */}
         {selectedVideos.length > 1 && (
           <div className="flex justify-start">
-            <div className="relative aspect-video w-[70%]">
-              <ReactPlayer
-                url={selectedVideos[1]}
-                controls
-                playing
-                width="100%"
-                height="100%"
-                className="relative z-10"
-              />
-              <Image
-                src={overlayImage}
-                alt="Overlay"
-                className="absolute inset-0 z-20 pointer-events-none"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
+            <VideoSection videoUrl={selectedVideos[1]} width="70%" />
           </div>
         )}
 
-        {/* 4番目のセット: 画像右寄せ */}
-        <div className="flex justify-end">
-          <div className="w-[30%]">
-            <Image
-              src={frogImage}
-              alt="frogImage"
-              className={`rounded-md transition-opacity duration-500 ${
-                imageVisibility[2] ? "opacity-100" : "opacity-0"
-              }`}
-              width={300}
-              height={200}
-            />
-          </div>
+        {/* 4番目のセット: 左右に画像 */}
+        <div className="flex justify-between items-center -mr-20">
+          <ImageSection
+            imageSrc={imageSources[2]}
+            width="50%"
+            isVisible={imageVisibility[2]}
+          />
+          <ImageSection
+            imageSrc={imageSources[3]}
+            width="80%"
+            isVisible={imageVisibility[3]}
+          />
         </div>
+
+        {/* 5番目のセット: 右に動画 */}
+        {selectedVideos.length > 2 && (
+          <div className="flex justify-end">
+            <VideoSection videoUrl={selectedVideos[2]} width="70%" />
+          </div>
+        )}
       </div>
     </div>
   );

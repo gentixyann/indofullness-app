@@ -7,29 +7,25 @@ import Image from "next/image";
 
 interface ImageSectionProps {
   imageSrc: string;
-  isVisible: boolean; // 表示・非表示の状態を管理
-  isFullWidth: boolean; // 横幅を管理
+  width?: string;
+  isVisible: boolean;
 }
 
 export default function ImageSection({
   imageSrc,
+  width = "70%",
   isVisible,
-  isFullWidth,
 }: ImageSectionProps) {
   return (
-    <div
-      className={`${
-        isFullWidth ? "w-full" : "w-[30%]"
-      } mx-auto mb-4 flex justify-center`}
-    >
+    <div style={{ width }}>
       <Image
         src={imageSrc}
-        alt="Related Image"
-        width={300}
-        height={200}
+        alt="gif"
         className={`rounded-md transition-opacity duration-500 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
+        width={500}
+        height={500}
       />
     </div>
   );
