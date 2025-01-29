@@ -1,14 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import ReactPlayer from "react-player";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
 import VideoSection from "@/components/VideoSection";
 import ImageSection from "@/components/ImageSection";
-
-const overlayImage = "/images/tv_frame.png";
-const frogImage = "/images/frog.gif";
 
 // 📌 画像リストを配列で管理
 const imageSources = [
@@ -16,6 +12,13 @@ const imageSources = [
   "/images/potate.gif",
   "/images/monkey.gif",
   "/images/chai.gif",
+  "/images/frog.gif",
+  "/images/dram.gif",
+  "/images/shiro.gif",
+  "/images/zou.gif",
+  "/images/phone.gif",
+  "/images/lion.gif",
+  "/images/cow.gif",
 ];
 
 export default function Page() {
