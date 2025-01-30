@@ -7,15 +7,18 @@ import imageSources from "../public/json/imageSources.json";
 import VideoSection from "@/components/VideoSection";
 import ImageSection from "@/components/ImageSection";
 import Link from "next/link";
+import Modal from "@/components/Modal";
 import AssassinFromIndiaButton from "@/components/AssassinFromIndiaButton";
 
 export default function Page() {
   const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
   const [imageVisibility, setImageVisibility] = useState<boolean[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   // 🎯 初回・画像リスト更新時に visibility 配列をセット
   useEffect(() => {
     setImageVisibility(Array(imageSources.length).fill(true));
+    setShowModal(true);
   }, []);
 
   // 🎯 ボタンで呼び出せるように useCallback でラップ
@@ -46,6 +49,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col items-center max-w-screen-sm mx-auto p-4 overflow-x-hidden">
+      {showModal && <Modal onClose={() => setShowModal(false)} />}
       {/* ロゴの表示 */}
       <div className="my-12">
         <Image
