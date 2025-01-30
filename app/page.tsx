@@ -3,23 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import videoUrls from "../public/json/videoUrls.json";
+import imageSources from "../public/json/imageSources.json";
 import VideoSection from "@/components/VideoSection";
 import ImageSection from "@/components/ImageSection";
-
-// 📌 画像リストを配列で管理
-const imageSources = [
-  "/images/horse.gif",
-  "/images/potate.gif",
-  "/images/monkey.gif",
-  "/images/chai.gif",
-  "/images/frog.gif",
-  "/images/dram.gif",
-  "/images/shiro.gif",
-  "/images/zou.gif",
-  "/images/phone.gif",
-  "/images/lion.gif",
-  "/images/cow.gif",
-];
+import Link from "next/link";
+import AssassinFromIndiaButton from "@/components/AssassinFromIndiaButton";
 
 export default function Page() {
   const [selectedVideos, setSelectedVideos] = useState<string[]>([]);
@@ -70,12 +58,16 @@ export default function Page() {
       </div>
 
       {/* ボタン */}
-      <button
-        onClick={fetchRandomVideos}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mb-4"
-      >
-        再生する
-      </button>
+      <div className="mb-12">
+        <Image
+          src="/images/reset_button.svg"
+          alt="アプリロゴ"
+          width={50}
+          height={50}
+          priority
+          onClick={fetchRandomVideos}
+        />
+      </div>
 
       {/* 各動画と画像を個別に配置 */}
       <div className="w-full flex flex-col gap-6">
@@ -201,6 +193,31 @@ export default function Page() {
           />
         </div>
       </div>
+      <div className="mb-10">
+        <Image
+          src="/images/asassin_from_india.svg"
+          alt="chai_bottom"
+          width={300}
+          height={50}
+          priority
+        />
+      </div>
+      <div className="mb-10">
+        <AssassinFromIndiaButton />
+      </div>
+
+      <div className="mb-2">
+        <Link href="https://100banch.com/magazine/63461/" target="_blank">
+          <Image
+            src="/images/about_indofullness.svg"
+            alt="chai_bottom"
+            width={300}
+            height={50}
+            priority
+          />
+        </Link>
+      </div>
+
       <div className="-mb-4">
         <Image
           src="/images/chai_bottom.svg"
