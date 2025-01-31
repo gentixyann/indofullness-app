@@ -9,18 +9,42 @@ interface ModalProps {
 
 export default function Modal({ onClose }: ModalProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  const handleClose = () => {
+    setIsClosing(true);
+
+    // 1.5秒後にモーダルを完全に削除
+    setTimeout(() => {
+      setIsVisible(false);
+      onClose();
+    }, 1500); // 1500ms のフェードアウト
+  };
+
+  // モーダルが完全に非表示になったら削除
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity ${
+        isClosing ? "opacity-0" : "opacity-100"
+      }`}
+      style={{ transition: "opacity 1.5s ease-in-out" }} // 0.3秒のフェードアウト
+    >
       <div
-        className="p-3 rounded-lg shadow-lg w-4/5 max-w-md border border-white bg-[#00000080] 
-                      max-h-[95vh] flex flex-col"
+        className={`p-3 rounded-lg shadow-lg w-4/5 max-w-md border border-white bg-[#00000080] 
+                      max-h-[95vh] flex flex-col transition-transform ${
+                        isClosing
+                          ? "scale-90 opacity-0"
+                          : "scale-100 opacity-100"
+                      }`}
+        style={{
+          transition: "opacity 31.5s ease-in-out, transform 1.5s ease-in-out",
+        }}
       >
         <Image
           width={100}
@@ -88,10 +112,7 @@ export default function Modal({ onClose }: ModalProps) {
                        items-center
                        justify-center
                        "
-            onClick={() => {
-              setIsVisible(false);
-              onClose();
-            }}
+            onClick={handleClose}
           >
             <span
               className="
