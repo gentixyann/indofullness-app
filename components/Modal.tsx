@@ -72,15 +72,45 @@ export default function Modal({ onClose }: ModalProps) {
         </div>
 
         {/* 閉じるボタン */}
-        <div className="mt-4 flex justify-center">
+        <div className="my-4 w-full flex justify-center">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="
+                       w-[90%]
+                       px-4
+                       py-2
+                       rounded-full
+                       bg-[#D94399CC]
+                       border
+                       border-white
+                       backdrop-blur-sm
+                       opacity-0.5
+                       flex
+                       items-center
+                       justify-center
+                       "
             onClick={() => {
               setIsVisible(false);
               onClose();
             }}
           >
-            閉じる
+            <span
+              className="
+                       text-white
+                       font-zen-kaku-gothic-new
+                       text-base
+                       font-bold
+                       leading-[23.17px]
+                       text-left"
+            >
+              マ!?インドフルネスを始める
+            </span>
+            <Image
+              width={30}
+              height={30}
+              src="/images/arrow_forward.svg"
+              alt="矢印"
+              className="ml-2"
+            />
           </button>
         </div>
       </div>
