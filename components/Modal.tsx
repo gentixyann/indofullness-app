@@ -68,7 +68,7 @@ export default function Modal({ onClose }: ModalProps) {
         </div>
 
         {/* スクロール可能なコンテンツ */}
-        <div className="scrollable overflow-y-auto max-h-[50vh] px-2 text-sm">
+        <div className="scrollable overflow-y-auto max-h-[50vh] p-2 text-s border-t border-b border-white/20">
           <Image
             src="/images/modal/slide_image.svg"
             alt="スライド画像"
