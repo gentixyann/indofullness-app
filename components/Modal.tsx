@@ -30,7 +30,7 @@ export default function Modal({ onClose }: ModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity ${
+      className={`fixed inset-0 flex items-center justify-center text-white bg-black bg-opacity-50 z-50 transition-opacity ${
         isClosing ? "opacity-0" : "opacity-100"
       }`}
       style={{ transition: "opacity 1.5s ease-in-out" }} // 0.3秒のフェードアウト
