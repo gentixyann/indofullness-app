@@ -147,6 +147,7 @@ export default function Page() {
             width="30%"
             isVisible={imageVisibility[6]}
             className="-mb-20"
+            mp3File="/audio/shiro.mp3"
           />
         </div>
 

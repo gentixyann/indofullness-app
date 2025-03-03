@@ -1,8 +1,6 @@
-// components/ImageSection.tsx
-
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 
 interface ImageSectionProps {
@@ -10,6 +8,7 @@ interface ImageSectionProps {
   width?: string;
   isVisible: boolean;
   className?: string;
+  mp3File?: string;
 }
 
 export default function ImageSection({
@@ -17,9 +16,27 @@ export default function ImageSection({
   width = "70%",
   isVisible,
   className = "",
+  mp3File,
 }: ImageSectionProps) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const handlePlayAudio = () => {
+    if (mp3File && audioRef.current) {
+      // 音声が再生中なら一旦停止、なければ再生
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  };
+
   return (
-    <div className={`${className} relative`} style={{ width }}>
+    <div
+      className={`${className} relative cursor-pointer`}
+      style={{ width }}
+      onClick={handlePlayAudio}
+    >
       <Image
         src={imageSrc}
         alt="gif"
@@ -29,6 +46,7 @@ export default function ImageSection({
         width={500}
         height={500}
       />
+      {mp3File && <audio ref={audioRef} src={mp3File} preload="auto" />}
     </div>
   );
 }
