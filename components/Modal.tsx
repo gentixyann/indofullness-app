@@ -36,7 +36,7 @@ export default function Modal({ onClose }: ModalProps) {
       style={{ transition: "opacity 1.5s ease-in-out" }} // 0.3秒のフェードアウト
     >
       <div
-        className={`p-3 rounded-lg shadow-lg w-4/5 max-w-md border border-white bg-[#00000080] 
+        className={`p-3 rounded-lg shadow-lg w-[90%] md:w-4/5 max-w-md border border-white bg-[#00000080] 
                       max-h-[95vh] flex flex-col transition-transform ${
                         isClosing
                           ? "scale-90 opacity-0"
@@ -68,7 +68,7 @@ export default function Modal({ onClose }: ModalProps) {
         </div>
 
         {/* スクロール可能なコンテンツ */}
-        <div className="scrollable overflow-y-auto max-h-[50vh] p-2 text-s border-t border-b border-white/20">
+        <div className="scrollable overflow-y-auto max-h-[50vh] p-2 text-s border-t border-b border-white/20 text-[14px]">
           <Image
             src="/images/modal/slide_image.svg"
             alt="スライド画像"
