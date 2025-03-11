@@ -88,6 +88,7 @@ export default function Page() {
             imageSrc={imageSources[0]}
             width="80%"
             isVisible={imageVisibility[0]}
+            mp3File="/audio/horse.mp3"
           />
           <ImageSection
             imageSrc={imageSources[1]}
@@ -115,6 +116,7 @@ export default function Page() {
             width="80%"
             isVisible={imageVisibility[3]}
             className="-mr-20"
+            mp3File="/audio/chai.mp3"
           />
         </div>
 
@@ -131,6 +133,7 @@ export default function Page() {
             imageSrc={imageSources[4]}
             width="40%"
             isVisible={imageVisibility[4]}
+            mp3File="/audio/frog.mp3"
           />
           <ImageSection
             imageSrc={imageSources[5]}
@@ -158,6 +161,7 @@ export default function Page() {
             width="80%"
             isVisible={imageVisibility[7]}
             className="-mb-10"
+            mp3File="/audio/zou.mp3"
           />
         </div>
 
@@ -174,11 +178,13 @@ export default function Page() {
             imageSrc={imageSources[8]}
             width="40%"
             isVisible={imageVisibility[8]}
+            mp3File="/audio/phone.mp3"
           />
           <ImageSection
             imageSrc={imageSources[9]}
             width="50%"
             isVisible={imageVisibility[9]}
+            mp3File="/audio/lion.mp3"
           />
         </div>
 

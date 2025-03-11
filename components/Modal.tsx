@@ -37,7 +37,7 @@ export default function Modal({ onClose }: ModalProps) {
     >
       <div
         className={`p-3 rounded-lg shadow-lg w-[90%] md:w-4/5 max-w-md border border-white bg-[#00000080] 
-                     h-[95dvh] flex flex-col transition-transform ${
+                     h-[90dvh] flex flex-col transition-transform ${
                        isClosing
                          ? "scale-90 opacity-0"
                          : "scale-100 opacity-100"
